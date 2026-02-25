@@ -65,6 +65,12 @@ variable "disk_storage" {
   default     = "local-lvm"
 }
 
+variable "import_from" {
+  description = "File ID to import as disk image (e.g., from proxmox_virtual_environment_download_file with content_type import)"
+  type        = string
+  default     = null
+}
+
 variable "vlan_id" {
   description = "VLAN ID for the network interface"
   type        = number

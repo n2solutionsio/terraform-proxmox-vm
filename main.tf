@@ -17,6 +17,7 @@ resource "proxmox_virtual_environment_vm" "this" {
 
   disk {
     datastore_id = var.disk_storage
+    import_from  = var.import_from
     size         = var.disk_size
     interface    = "scsi0"
   }
