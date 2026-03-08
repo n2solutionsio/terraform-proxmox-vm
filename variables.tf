@@ -32,9 +32,9 @@ variable "cpu_cores" {
 }
 
 variable "cpu_type" {
-  description = "CPU type (e.g., x86-64-v2-AES, host)"
+  description = "CPU type (e.g., host, x86-64-v2-AES). Use 'host' for best performance on single-node setups."
   type        = string
-  default     = "x86-64-v2-AES"
+  default     = "host"
 }
 
 variable "memory" {
