@@ -148,3 +148,9 @@ variable "started" {
   type        = bool
   default     = true
 }
+
+variable "qemu_agent_enabled" {
+  description = "Enable the QEMU guest agent (agent.enabled). Requires the qemu-guest-agent package running in the guest and a power-cycle to attach the virtio-serial channel. Defaults off for backwards compatibility."
+  type        = bool
+  default     = false
+}

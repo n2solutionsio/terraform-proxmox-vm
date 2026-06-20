@@ -6,6 +6,14 @@ resource "proxmox_virtual_environment_vm" "this" {
   on_boot     = var.on_boot
   started     = var.started
 
+  # QEMU guest agent. Requires the qemu-guest-agent package running inside the
+  # guest AND a power-cycle for the virtio-serial channel to attach. Defaults
+  # off so this is a no-op for existing consumers.
+  agent {
+    enabled = var.qemu_agent_enabled
+    type    = "virtio"
+  }
+
   cpu {
     cores = var.cpu_cores
     type  = var.cpu_type
