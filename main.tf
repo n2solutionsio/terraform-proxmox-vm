@@ -57,14 +57,19 @@ resource "proxmox_virtual_environment_vm" "this" {
     }
   }
 
-  # Cloud-init user-data and the imported base image only matter at creation
-  # time (cloud-init runs once, on first boot). A re-rendered snippet or a
-  # re-published upstream image must not force a destroy/recreate of a running
-  # node — ignore post-create drift on those two attributes.
+  # Cloud-init and the imported base image only matter at creation time
+  # (cloud-init runs once, on first boot). Ignore ALL post-create drift on the
+  # initialization block and the imported disk so a running node is never
+  # rebuilt or errored for boot-time-only changes:
+  #  - user_data_file_id: re-rendered snippets shouldn't force replacement
+  #  - user_account.keys: write-only in the provider, so it perma-diffs; worse,
+  #    applying it rewrites the ide2 cloud-init drive, which Proxmox rejects on
+  #    a running VM ("hotplug problem - unable to change media type")
+  #  - import_from: a re-published upstream image shouldn't touch a built disk
   lifecycle {
     ignore_changes = [
       disk[0].import_from,
-      initialization[0].user_data_file_id,
+      initialization,
     ]
   }
 }
