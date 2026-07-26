@@ -56,4 +56,15 @@ resource "proxmox_virtual_environment_vm" "this" {
       }
     }
   }
+
+  # Cloud-init user-data and the imported base image only matter at creation
+  # time (cloud-init runs once, on first boot). A re-rendered snippet or a
+  # re-published upstream image must not force a destroy/recreate of a running
+  # node — ignore post-create drift on those two attributes.
+  lifecycle {
+    ignore_changes = [
+      disk[0].import_from,
+      initialization[0].user_data_file_id,
+    ]
+  }
 }
